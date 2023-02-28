@@ -10,19 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DownloadController {
-	@GetMapping("/download")
-	public String download(HttpServletRequest req, HttpServletResponse resp) {
-		File file = new File("C:/Users/g.colameo/Desktop/DownloadFile.txt");
+	@GetMapping("/download/{path}")
+	public String download(HttpServletRequest req, HttpServletResponse resp, @PathVariable String path) {
+		File file = new File("C:/Users/g.colameo/Desktop/" + path);
 
 		try {
 			FileInputStream fileIn = new FileInputStream(file);
 			ServletOutputStream out = resp.getOutputStream();
 			 resp.setHeader(
-				        HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + file.getName() + ".txt");
+				        HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + path);
 			resp.setContentType("text/plain");
 			byte[] outputByte = new byte[4096];
 			//copy binary contect to output stream
